@@ -1,0 +1,265 @@
+FUNDAMENTOS DE SOFTWARE - PRÁCTICA 6
+Alumno: Miguel Ángel Fernández Gutiérrez
+Fecha:  26 octubre, 2017
+
+____________________
+
+EJERCICIO 6.1
+
+#!/bin/bash
+is_DIR=`test -d $1; echo $?`
+is_SIZE=`echo $2 | grep -q "[0-9]\+"; echo $?`
+if [ $# == 2 ]
+then
+	if [ $is_SIZE == "0" ] && [ $is_DIR == "0" ]
+	then
+		find $1 -size $2 > archivosSizN.txt
+		echo "Información escrita en archivosSizN.txt"
+	else
+		echo "No existe el directorio o el tamaño introducido no es un entero"
+	fi
+else
+	echo "Número incorrecto de parámetros"
+fi
+
+____________________
+
+EJERCICIO 6.2
+
+#!/bin/bash
+
+is_DIR=`test -d $1; echo $?` # devuelve 0 si es un directorio y 1 en caso contrario
+
+if [ $# == 1 ]
+then
+	if [ $is_DIR == 0 ]
+	then
+		for archivo in $(ls)
+		do
+			id=0
+			es_archivo=`test -f $archivo; echo $?`
+			es_directorio=`test -d $archivo; echo $?`
+			es_enlace=`test -h $archivo; echo $?`
+			if [ $es_archivo == "0" ]
+			then
+				id="archivo"
+			elif [ $es_directorio == "0" ]
+			then
+				id="directorio"
+			elif [ $es_enlace == "0" ]
+			then
+				id="enlace"
+			else
+				id="tipo de archivo desconocido"
+			fi
+			echo $archivo es un $id
+		done
+	else
+		echo "No ha introducido un directorio válido"
+	fi
+else
+	echo "Ha introducido más de un parámetro"
+fi
+
+____________________
+
+EJERCICIO 6.3
+
+#!/bin/bash
+
+if [ $# == 1 ]
+then
+	if [ $[`echo $1 | wc -m`-1] == 1 ]
+	then
+		case $1 in
+			[º0-9\'¡] ) echo "La tecla se encuentra en la primera fila" ;;
+			[qwertyuiop\`+] ) echo "La tecla se encuentra en la segunda fila" ;;
+			[asdfghjklñ´ç] ) echo "La tecla se encuentra en la tercera fila" ;;
+			[zxcvbnm,.-] ) echo "La tecla se encuentra en la cuarta fila" ;;
+			* ) echo "No hemos logrado localizar la tecla" ;;
+		esac
+	else
+		echo "Ha introducido más de un caracter"
+	fi
+else
+	echo "Ha de introducir un solo caracter en un único argumento"
+fi
+
+____________________
+
+EJERCICIO 6.4
+
+#!/bin/bash
+
+case $1 in
+	"ene" | 1) echo "enero" ;;
+	"feb" | 2) echo "febrero" ;;
+	"mar" | 3) echo "marzo" ;;
+	"abr" | 4) echo "abril" ;;
+	"may" | 5) echo "mayo" ;;
+	"jun" | 6) echo "junio" ;;
+	"jul" | 7) echo "julio" ;;
+	"ago" | 8) echo "agosto" ;;
+	"sep" | 9) echo "septiembre" ;;
+	"oct" | 10) echo "octubre" ;;
+	"nov" | 11) echo "noviembre" ;;
+	"dic" | 12) echo "diciembre" ;;
+	*) echo "Mes no reconocido" ;;
+esac
+
+____________________
+
+EJERCICIO 6.5
+
+#!/bin/bash
+
+sigue=true
+
+while $sigue;
+do
+	read -p "Inserte un número: " valor
+	if [ $valor -ge 1 ] && [ $valor -le 10 ]
+	then
+		sigue=false
+	fi
+done
+
+echo "El número seleccionado entre 1 y 10 es el:" $valor
+
+____________________
+
+EJERCICIO 6.6
+
+#!/bin/bash
+
+## Para que el giro vaya más rápido o más lento, variaremos el valor de INTERVAL
+## echo -e te permite interpretar los \b, \n, etc. Por ejemplo:
+##	echo "abc\ndef"
+##	>> abc\ndef
+##	echo -e "abc\ndef"
+##	>> abc
+##	def
+
+function _rotar_linea {
+	INTERVAL=1
+	TCOUNT="0"
+	while true
+	do
+		TCOUNT=`expr $TCOUNT + 1`
+		case $TCOUNT in
+			"1") echo -e "-""\b\c"
+			     sleep $INTERVAL ;;
+			"2") echo -e '\\'"\b\c"
+			     sleep $INTERVAL ;;
+			"3") echo -e "|""\b\c"
+			     sleep $INTERVAL ;;
+			"4") echo -e "/""\b\c"
+			     sleep $INTERVAL ;;
+			  *) TCOUNT="0" ;;
+		esac
+	done
+}
+
+_rotar_linea & ROTAR_PID=$!
+
+for ((CONT=1; CONT<400000; CONT++)) ;
+do
+	:
+done
+
+kill -9 $ROTAR_PID
+
+echo -e "\b\b"
+
+____________________
+
+EJERCICIO 6.7
+
+#!/bin/bash
+
+for line in `cat /etc/passwd`
+do
+	usuario=`echo $linea|cut -d: -f1`
+	shell=`echo $linea|cut -d: -f7`
+	val="/bin/$1"
+	if [[ $valor == `echo $shell` ]]
+	then
+		echo $usuario >> temp.txt
+	fi
+done
+
+cat temp.txt|sort
+rm temp.txt
+
+____________________
+
+EJERCICIO 6.8 (cpback.sh)
+
+#!/bin/bash
+
+destination="CopiasSeguridad"
+
+if [[ `test -d $destination; echo $?` == 1 ]]
+	then
+		mkdir $destination
+fi
+
+if [ &# -ge 1 ]
+then
+	## si uno de los parámetros no existe, su suma ya no valdrá 0
+	sum=0
+	for i in $@
+	do
+		if [ `test -e $i; echo $?` == 1 ]
+		then
+			sum=$[$sum+1]
+		fi
+	done
+
+	if [ $sum -eq 0 ]
+	then
+		tar -cvf "./$destination/copia`date +"%Y%m%d"`.tar" $@
+		gzip "./$destination/copia`date +"%Y%m%d"`.tar"
+	else
+		echo "Alguno de los parámetros no existe"
+	fi
+else
+	echo "Ha insertado un número de parámetros no permitido"
+fi
+
+____________________
+
+EJERCICIO 6.9 (newdirfiles)
+
+#!/bin/bash
+
+if [ $# -eq 3 ]
+then
+	num_files=$2
+	if [ `echo $num_files|grep "^[1-9][0-9]\?$"` ]
+	then
+		dirname=$1
+		if [[ `test -d $dirname; echo $?` == 1 ]]
+		then
+			mkdir $dirname
+		fi
+		chmod u+rw $dirname
+		basefilename=$3
+		cd $dirname
+		for i in `seq 1 1 $num_files`
+		do
+			# colocamos un 0 en los números menores que 9, dejándolos del tipo 01, 02, ..., 10, 11...
+			if [ $i -lt 10 ]
+			then
+				touch $basefilename"0"$i
+			else
+				touch $basefilename$i
+			fi
+		done
+		echo "Archivos creados satisfactoriamente"
+	else
+		echo "Debe insertar un número del 1 al 99"
+	fi
+else
+	echo "No ha insertado el número correcto de argumentos"
+fi

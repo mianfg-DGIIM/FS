@@ -1,0 +1,11 @@
+#!/bin/bash
+echo $1 | grep [a-z]; echo $?
+if [[ `echo $1 | grep [a-z]; echo $?` == 0 ]]
+then
+	echo "Se trata de una letra minúscula"
+elif [[ `echo $1 | grep [A-Z]; echo $?` == 0 ]]
+then
+	echo "Se trata de una letra mayúscula"
+else
+	echo "No es ninguna letra"
+fi

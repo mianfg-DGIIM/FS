@@ -1,0 +1,133 @@
+GREP Y EXPRESIONES REGULARES
+
+.
+----------
+
+[me@linuxbox ~]$ grep -h '.zip' dirlist*.txt
+bunzip2
+bzip2
+bzip2recover
+gunzip
+gzip
+funzip
+gpg-zip
+preunzip
+prezip
+prezip-bin
+unzip
+unzipsfx
+
+ANCHORS: ^ $
+----------
+
+[me@linuxbox ~]$ grep -h '^zip' dirlist*.txt
+zip
+zipcloak
+zipgrep
+zipinfo
+zipnote
+zipsplit
+[me@linuxbox ~]$ grep -h 'zip$' dirlist*.txt
+gunzip
+gzip
+funzip
+gpg-zip
+preunzip
+prezip
+unzip
+zip
+[me@linuxbox ~]$ grep -h '^zip$' dirlist*.txt
+zip
+
+BRACKET EXPRESSIONS AND CHARACTER CLASSES:
+----------
+
+[me@linuxbox ~]$ grep -h '[bg]zip' dirlist*.txt
+bzip2
+bzip2recover
+gzip
+
+NEGATION
+----------
+[me@linuxbox ~]$ grep -h '[^bg]zip' dirlist*.txt
+bunzip2
+gunzip
+funzip
+gpg-zip
+preunzip
+prezip
+prezip-bin
+unzip
+unzipsfx
+
+With negation activated, we get a list of files that contain the string “zip” preceded by any
+character except “b” or “g”. Notice that the file zip was not found. A negated character
+set still requires a character at the given position, but the character must not be a member
+of the negated set.
+The caret character only invokes negation if it is the first character within a bracket ex-
+pression; otherwise, it loses its special meaning and becomes an ordinary character in the
+set.
+
+TRADITIONAL CHARACTER RANGES
+----------
+[me@linuxbox ~]$ grep -h '^[ABCDEFGHIJKLMNOPQRSTUVWXZY]' dirlist*.txt
+Equivalent to:
+[me@linuxbox ~]$ grep -h '^[A-Z]' dirlist*.txt
+MAKEDEV
+ControlPanel
+GET
+HEAD
+POST
+X
+X11
+Xorg
+MAKEFLOPPIES
+NetworkManager
+NetworkManagerDispatcher
+
+Starts with letters and numbers:
+[me@linuxbox ~]$ grep -h '^[A-Za-z0-9]' dirlist*.txt
+
+? MATCH ELEMENT ZERO OR ONE TIME
+----------
+
+[me@linuxbox ~]$ echo "(555) 123-4567" | grep -E '^\(?[0-9][0-9][0-9]\)? [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$'
+(555) 123-4567
+[me@linuxbox ~]$ echo "555 123-4567" | grep -E '^\(?[0-9][0-9][0-9]\)? [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$'
+555 123-4567
+[me@linuxbox ~]$ echo "AAA 123-4567" | grep -E '^\(?[0-9][0-9][0-9]\)? [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$'
+[me@linuxbox ~]$
+
+* MATCH ELEMENT ZERO OR MORE TIMES
+---------
+
+[me@linuxbox ~]$ echo "This works." | grep -E '[[:upper:]][[:upper:][:lower:] ]*\.'
+This works.
+[me@linuxbox ~]$ echo "This Works." | grep -E '[[:upper:]][[:upper:][:lower:] ]*\.'
+This Works.
+[me@linuxbox ~]$ echo "this does not" | grep -E '[[:upper:]][[:upper:][:lower:] ]*\.'
+[me@linuxbox ~]$
+
++ MATCH ELEMENT ONE OR MORE TIMES
+----------
+[me@linuxbox~]$ echo "This that" | grep -E '^([[:alpha:]]+ ?)+$'
+This that
+[me@linuxbox~]$ echo "a b c" | grep -E '^([[:alpha:]]+ ?)+$'
+a b c
+[me@linuxbox~]$ echo "a b 9" | grep -E '^([[:alpha:]]+ ?)+$'
+[me@linuxbox~]$ echo "abc d" | grep -E '^([[:alpha:]]+ ?)+$'
+[me@linuxbox~]$
+
+{} MATCH ELEMENT SPECIFIC NUMBER OF TIMES
+----------
+{N} exactly N times
+{N,M} at least N times, but no more than M times
+{N,} match preceding element if it occurs N or more times
+{,M} match preceding element if it occurs no more than M times
+
+[me@linuxbox ~]$ echo "(555) 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$'
+(555) 123-4567
+[me@linuxbox ~]$ echo "555 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$'
+555 123-4567
+[me@linuxbox ~]$ echo "5555 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$'
+[me@linuxbox ~]$

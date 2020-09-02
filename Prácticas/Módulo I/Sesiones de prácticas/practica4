@@ -1,0 +1,244 @@
+FUNDAMENTOS DE SOFTWARE 1º DGIIM
+PRÁCTICA 4 - Variables, alias, órdenes de búsqueda y guiones
+Alumno: Miguel Ángel Fernández Gutiérrez
+Fecha:  05/10/2017 - Sesión 3
+__________
+
+EJERCICIO 4.1
+
+mianfg@ei142155:~$ VAR1=100
+mianfg@ei142155:~$ VAR2=$VAR1
+mianfg@ei142155:~$ VAR3=var3
+mianfg@ei142155:~$ VAR4="var4"
+mianfg@ei142155:~$ VAR5=500
+__________
+
+EJERCICIO 4.2
+
+mianfg@ei142155:~$ NOMBRE=FS
+mianfg@ei142155:~$ echo $NOMBRE
+FS
+mianfg@ei142155:~$ bash
+mianfg@ei142155:~$ echo $NOMBRE
+
+
+Se arreglaría usando export:
+
+mianfg@ei142155:~$ export NOMBRE=FS
+mianfg@ei142155:~$ bash
+mianfg@ei142155:~$ echo $NOMBRE
+FS
+___________
+
+EJERCICIO 4.3
+
+mianfg@ei142155:~$ echo "Los archivos que hay en el directorio son: $(ls -l)"
+Los archivos que hay en el directorio son: total 16
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:36 Descargas
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:36 Documentos
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:39 Escritorio
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:36 Imágenes
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:36 Música
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:36 Plantillas
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:36 Público
+drwxr-xr-x 2 mianfg alumno 2048 oct  5 15:36 Vídeos
+mianfg@ei142155:~$ echo 'Los archivos que hay en el directorio son: $(ls -l)'
+Los archivos que hay en el directorio son: $(ls -l)
+
+Las comillas dobles protegen cadenas manteniendo el significado de una serie de caracteres especiales, mientras que las comillas simples anulan el significado de dichos caracteres, menos por !
+__________
+
+EJERCICIO 4.4
+
+mianfg@ei142155:~$ numero=$numero+1
+mianfg@ei142155:~$ echo $numero
++1
+
+Está haciendo uso de la expresión como un literal, encadenando $numero y +1, y como numero no tiene valores dentro pone directamente el +1. Podremos resolverlo haciendo que numero sea de tipo entero:
+
+mianfg@ei142155:~$ declare -i numero=1
+mianfg@ei142155:~$ echo $numero
+1
+mianfg@ei142155:~$ numero=`expr $numero+1`
+mianfg@ei142155:~$ echo $numero
+2
+__________
+
+EJERCICIO 4.5
+
+Crearemos un documento, llamado 4.5, en ~, que contiene:
+
+#!/bin/bash
+printf "Hola $1\n"
+
+Y a continuación, lo que tenemos que hacer en consola es:
+
+mianfg@ei142155:~$ chmod +x 4.5
+mianfg@ei142155:~$ ./4.5 Miguel
+Hola Miguel
+__________
+
+EJERCICIO 4.6
+
+Crearemos un documento, llamado 4.6, en ~, que contiene:
+
+#!/bin/bash
+printf "Hola a todos: $*\n"
+
+Y a continuación, lo que tenemos que hacer en consola es:
+
+mianfg@ei142155:~$ chmod +x 4.6
+mianfg@ei142155:~$ ./4.6 Miguel Juan Javier
+Hola a todos: Miguel Juan Javier
+__________
+
+EJERCICIO 4.7
+
+mianfg@ei142155:~$ VAR1="hola"
+mianfg@ei142155:~$ VAR2="adios"
+mianfg@ei142155:~$ VAR3="14"
+
+a)
+mianfg@ei142155:~$ printf "%15s %15s %15d\n" $VAR1 $VAR2 $VAR3
+           hola           adios              14
+
+b)
+Son variables locales.
+
+c)
+mianfg@ei142155:~$ unset VAR2
+
+d)
+Al ser variables locales sólo pueden verse desde el mismo terminal:
+mianfg@ei142155:~$ echo $VAR1 $VAR3
+
+
+e)
+mianfg@ei142155:~$ VECT=(hola adios 14)
+
+f)
+mianfg@ei142155:~$ echo ${VECT[1]}
+adios
+__________
+
+EJERCICIO 4.8
+
+mianfg@ei142155:~$ alias ne='ls .|wc -l'
+mianfg@ei142155:~$ ne
+12
+
+Para que sea del directorio HOME del usuario que lo ejecuta:ç
+
+mianfg@ei142155:~$ alias ne='ls $HOME|wc -l'
+mianfg@ei142155:~$ ne
+12
+__________
+
+EJERCICIO 4.9
+
+mianfg@ei142155:~$ find /home -size -1
+/home/mianfg/Escritorio/practica4
+/home/mianfg/.cache/unity/first_run.stamp
+/home/mianfg/.config/compiz-1/compizconfig/config
+/home/mianfg/.config/compiz-1/compizconfig/firstrun
+/home/mianfg/.config/enchant/es.dic
+/home/mianfg/.config/enchant/es.exc
+/home/mianfg/.gconf/apps/gnome-terminal/profiles/%gconf.xml
+/home/mianfg/.gconf/apps/gnome-terminal/%gconf.xml
+/home/mianfg/.gconf/apps/%gconf.xml
+/home/mianfg/.local/share/unity-settings-daemon/input-sources-converted
+/home/mianfg/.local/share/.converted-launchers
+/home/mianfg/.local/share/zeitgeist/fts.index/flintlock
+/home/mianfg/.mozilla/firefox/x50cwpbc.default/.parentlock
+/home/mianfg/4.5~
+find: «/home/operador/.config»: Permiso denegado
+find: «/home/operador/.cache»: Permiso denegado
+find: «/home/operador/.gconf»: Permiso denegado
+find: «/home/operador/.local/share/applications»: Permiso denegado
+find: «/home/operador/.local/share/sounds»: Permiso denegado
+find: «/home/operador/.local/share/evolution»: Permiso denegado
+find: «/home/operador/.local/share/keyrings»: Permiso denegado
+/home/operador/.local/share/unity-settings-daemon/input-sources-converted
+find: «/home/operador/.local/share/gvfs-metadata»: Permiso denegado
+/home/operador/.local/share/.converted-launchers
+find: «/home/operador/.local/share/nautilus»: Permiso denegado
+find: «/home/operador/.local/share/telepathy»: Permiso denegado
+find: «/home/operador/.local/share/zeitgeist»: Permiso denegado
+find: «/home/operador/.local/share/unity-webapps»: Permiso denegado
+find: «/home/operador/.local/share/Trash»: Permiso denegado
+find: «/home/operador/.compiz»: Permiso denegado
+find: «/home/operador/.nv»: Permiso denegado
+find: «/home/operador/.mozilla»: Permiso denegado
+find: «/home/operador/.dbus»: Permiso denegado
+find: «/home/operador/.adobe»: Permiso denegado
+find: «/home/operador/.macromedia»: Permiso denegado
+/home/operador/.netbeans/8.0.2/var/imported
+/home/operador/.netbeans/8.0.2/.lastModified
+
+Para que se guarde en archivosP:
+
+mianfg@ei142155:~$ find /home -size -1 >> ./archivosP
+__________
+
+EJERCICIO 4.10
+
+mianfg@ei142155:~$ find ./*ejemplo*
+./ejemplox
+__________
+
+EJERCICIO 4.11
+
+mianfg@ei142155:~$ man find
+mianfg@ei142155:~$ man grep
+__________
+
+EJERCICIO 4.12
+
+Creamos un documento, 4.12, con el siguiente código:
+
+#!/bin/bash
+cat /etc/passwd | cut -d ":" -f 1 | grep $1 &> /dev/null
+var="$?"
+
+if [ "$var" == "0" ]; then
+	echo "Usuario $1 tiene cuenta en el sistema"
+else
+	echo "Usuario $1 NO dispone de cuenta en el sistema"
+fi
+
+A continuación ejecutamos en la terminal:
+
+mianfg@ei142155:~$ chmod +x 4.12
+mianfg@ei142155:~$ ./4.12 mianfg
+Usuario mianfg tiene cuenta en el sistema
+__________
+
+EJERCICIO 4.13
+
+Creamos un documento, 4.13, con el siguiente código:
+
+#!/bin/bash
+
+num_archivos=`ls -lR $HOME | cut -d " " -f 1 | grep -e '-[-w][-x]$' | wc -l`
+
+echo "Hay $num_archivos archivos que no tienen permiso de lectura para el resto de los usuarios"
+
+A continuación ejecutamos en la terminal:
+
+mianfg@ei142155:~$ chmod +x 4.13
+mianfg@ei142155:~$ ./4.13
+Hay 0 archivos que no tienen permiso de lectura para el resto de los usuarios
+__________
+
+EJERCICIO 4.14
+
+Creamos un archivo, llamado numE, que contiene el siguiente código:
+
+#!/bin/bash
+ls $1 | wc -l
+
+A continuación ejecutamos en la terminal:
+
+mianfg@ei142155:~$ chmod +x numE
+mianfg@ei142155:~$ ./numE
+21

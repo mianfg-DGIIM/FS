@@ -1,0 +1,143 @@
+EXAMEN MÓDULO I - GRUPO 3
+
+[8 puntos] 1-a. Cree un guión (script) llamado examen1.sh que tenga el siguiente
+funcionamiento:
+./examen1.sh
+./examen1.sh
+./examen1.sh
+./examen1.sh
+--ruta
+--ayuda
+--grupo
+directorio
+
+Si el guión (script) se ejecuta con un número erróneo de argumentos, o con argumentos erróneos, el
+script mostrará la ayuda.
+--ayuda: muestra esta ayuda por pantalla
+--grupo: muestra el nombre y apellidos, así como el grupo del alumno que ha realizado el script,
+debajo mostrará dinámicamente una lista con los nombres de los grupos en Linux a los que
+pertenece el usuario que ejecute el script.
+--ruta: se cambiará la variable directorio_basura del script al directorio dado por argumento.
+Tanto si se ejecuta con el parámetro --ruta, como si el script se ejecuta sin argumentos, el script
+definirá la variable directorio_basura (que, si no se indica mediante el parámetro --ruta, por
+defecto será la carpeta trash del directorio temporal del sistema).
+El funcionamiento del script será:
+1. Se verificará que no hay ficheros modificados más recientemente de 5 días.
+2. En caso de no encontrarlos se saldrá del script añadiendo al fichero temporal llamado
+tmp.log y ubicado en la carpeta home del usuario, un mensaje como el siguiente:
+“[ ] Se han leído X ficheros, Y más recientes de 5 días. No se hace nada (D).”
+Donde X es el número de ficheros totales en directorio_basura (sin contar ocultos). Y es el
+número de ficheros más recientes de 5 días en directorio_basura, y D es la hora y fecha en
+cualquier formato.
+3. En caso de encontrarlos, el script creará una nuevo directorio dentro del directorio indicado
+en directorio_basura que de nombre tenga la fecha actual con el siguiente formato:
+.TMP-YY_MM_DD
+y con los siguientes permisos: grupo: nada; usuario: todos; otros: nada
+(donde YY son dos dígitos del año, MM dos dígitos del mes, y DD dos dígitos del día).
+4. En ese caso, se moverán todos los ficheros no ocultos del directorio directorio_basura al
+directorio temporal creado anteriormente.
+Adicionalmente añadirá una entrada al fichero de mensajes (tmp.log) de la carpeta home del
+usuario que diga:
+“[x] No hay ficheros recientes. Se han movido Z ficheros a la carpeta C (D).”
+Donde Z es el número de ficheros totales en directorio_basura (sin contar ocultos). C es el
+directorio temporal creado anteriormente. Y D es la hora y fecha en el mismo formato que elpunto 1.2.
+En dicho script no deben aparecer errores en la pantalla ni redirigirse a ficheros legibles por los
+usuarios del sistema.
+_________________________________________-
+
+SOLUCIÓN:
+
+#!/bin/bash
+
+DIR_BASURA=/home/$USER/.local/share/Trash
+echo $DIR_BASURA
+function basura {
+  #if ! [[ -d $DIR_BASURA ]]; then
+  #  echo "Directorio basura no existe, necesario crearlo"
+  #  mkdir $DIR_BASURA
+  #fi
+  #cd $DIR_BASURA
+  NUM_FICHEROS=`ls -l $DIR_BASURA | grep -v ^[lt] | wc -l`
+  NUM_FICHEROS_RECIENTES=`find $DIR_BASURA -atime -5 | wc -l`
+  # find cuenta el propio directorio como fichero:
+  NUM_FICHEROS_RECIENTES=`expr $NUM_FICHEROS_RECIENTES - 1`
+  FECHA=`date +%y`_`date +%m`_`date +%d`
+  if [[ $NUM_FICHEROS_RECIENTES == 0 ]]; then
+    # no hemos encontrado ficheros modificados más recientemente de 5 días
+    echo "[ ] Se han leído $NUM_FICHEROS ficheros, $NUM_FICHEROS_RECIENTES más recientes de 5 días. No se hace nada ($FECHA)" >> ~/tmp.log
+  else
+    MOVIDOS=0
+    if ! [[ -d $DIR_BASURA/.tmp-$FECHA ]]; then
+      echo "Creando carpeta a la que mover la basura: $DIR_BASURA/.tmp-$FECHA"
+      if ! [[ -d $DIR_BASURA/.tmp-$FECHA ]]; then
+        mkdir $DIR_BASURA/.tmp-$FECHA
+      fi
+    fi
+    chmod g-rwx,u+rwx,o-rwx $DIR_BASURA/.tmp-$FECHA
+    for archivo in `ls $DIR_BASURA`; do
+      cd $DIR_BASURA; mv $archivo $DIR_BASURA/.tmp-$FECHA
+      MOVIDOS=`expr $MOVIDOS + 1`
+    done
+    # otra forma: mv $DIR_BASURA/* $DIR_BASURA/.tmp-$FECHA
+    echo "[x] No hay ficheros recientes. Se han movido $MOVIDOS ficheros a la carpeta $DIR_BASURA ($FECHA)" >> ~/tmp.log
+  fi
+  #`find $DIR_BASURA -atime -5; echo $?` # queremos que valor sea 1
+}
+
+if [[ $# == 2 ]]; then
+  if [[ $1 == --ruta ]]; then
+    DIR_BASURA=$2
+    basura
+  else
+    echo "Error: el primer argumento no es válido"
+  fi
+elif [[ $# == 1 ]]; then
+  if [[ $1 == --ayuda ]]; then
+    echo ayuda
+  elif [[ $1 == --grupo ]]; then
+    echo grupo
+    groups $USER
+  else
+    echo "Error: el primer argumento no es válido"
+  fi
+elif [[ $# == 0 ]]; then
+  basura
+fi
+
+-----------------------
+
+[2 puntos] 1-b. Cree un guión (script) llamado examen2.sh en el que se indique
+como comentario la orden u órdenes necesarias para que en lugar de ejecutarse rm
+sobre ficheros o carpetas, dichos ficheros o carpetas se movieran al directorio dado
+por defecto en el script anterior en la variable directorio_basura .
+Adicionalmente implemente en el mismo script las órdenes necesarias para que se
+muestren por pantalla solamente las palabras que empiecen por mayúscula del fichero
+pasado como primer argumento y además indique el número de palabras encontradas
+al final y el número de palabras totales del fichero.
+Asuma que el fichero pasado contiene una única columna con palabras y que en una
+misma línea (fila) no aparece nunca más de una palabra.
+_______________________________________
+
+SOLUCIÓN:
+
+#!/bin/bash
+
+# nota importante: para poder mantener el alias, es necesario ejecutar el
+# script usando source, de forma que el alias se mantenga en la consola y no
+# sólo durante la ejecución del script
+
+DIR_BASURA=~/Escritorio
+
+function palabras {
+  echo "Mostrando las palabras que comienzan por mayúscula:"
+  grep "^[A-Z].*" $1
+  echo "Son en total: `grep "^[A-Z].*" $1 | wc -l` palabras"
+  echo "Además, el fichero tiene en total: `cat $1 | wc -l` palabras"
+}
+
+if [[ $1 == "--eliminar" ]]; then
+  unalias rm
+else
+  echo "Ahora puede usar rm de otra forma. Ejecute --uninstall para eliminar la funcionalidad"
+  alias rm='mv $@ $DIR_BASURA; palabras'
+fi

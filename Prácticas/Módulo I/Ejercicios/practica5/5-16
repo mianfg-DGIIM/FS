@@ -1,0 +1,4 @@
+#!/bin/bash
+
+find $1 -name "*e*[0-9]*" -o -name "*[0-9]*e*" -and -not -name "[01]"
+find $1 -name -regex

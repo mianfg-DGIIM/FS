@@ -1,0 +1,404 @@
+FUNDAMENTOS DE SOFTWARE - PRÁCTICA 5
+Alumno: Miguel Ángel Fernández Gutiérrez (1º DGIIM)
+Fecha:  19 octubre, 2017
+____________________
+
+EJERCICIO 5.1
+
+mianfg@ei142155:~$ DIAS_ANIO=365
+mianfg@ei142155:~$ DIA_ACTUAL=$(date +%j)
+mianfg@ei142155:~$ echo "Faltan $(( $DIAS_ANIO - $DIA_ACTUAL )) días hasta el fin de año"
+Faltan 73 días hasta el fin de año
+____________________
+
+EJERCICIO 5.2
+
+mianfg@ei142155:~$ echo $v
+1
+mianfg@ei142155:~$ echo $((v++))
+1
+mianfg@ei142155:~$ echo $v
+2
+mianfg@ei142155:~$ echo $((++v))
+3
+mianfg@ei142155:~$ echo $v
+3
+____________________
+
+EJERCICIO 5.3
+
+mianfg@ei142155:~$ var1=6
+mianfg@ei142155:~$ var2=3
+mianfg@ei142155:~$ echo $[var1/=var2]
+2
+mianfg@ei142155:~$ echo $var1
+2
+mianfg@ei142155:~$ var1=6
+mianfg@ei142155:~$ echo $[var1=var1/var2]
+2
+____________________
+
+EJERCICIO 5.4
+
+mianfg@ei142155:~$ echo "6/5|bc -l"
+6/5|bc -l
+mianfg@ei142155:~$ echo '6/5|bc -l'
+6/5|bc -l
+mianfg@ei142155:~$ echo "6/5"|bc -l
+1.20000000000000000000
+mianfg@ei142155:~$ echo '6/5'|bc -l
+1.20000000000000000000
+____________________
+
+EJERCICIO 5.5
+
+mianfg@ei142155:~$ echo "(3-2)/5"|bc -l
+.20000000000000000000
+mianfg@ei142155:~$ echo '(3-2)/5'|bc -l
+.20000000000000000000
+mianfg@ei142155:~$ echo $[(3-2)/5]|bc -l
+0
+____________________
+
+EJERCICIO 5.6
+
+mianfg@ei142155:~$ help let
+let: let arg [arg ...]
+    Evaluar expresiones aritméticas.
+    
+    Evaluar cada ARG como una expresión aritmética.  La evaluación se hace en
+    enteros de anchura fija sin comprobación de desbordamientos, aunque las
+    divisiones entre 0 se capturan y se notifican como un error. La siguiente
+    lista de operadores se agrupa en niveles de operadores de igual-
+    precedencia. Los niveles se listan en orden decreciente de precedencia.
+
+    	id++, id--	post-incremento, post-decremento de variable
+    	++id, --id	pre-incremento, pre-decremento de variable
+    	-, +		menos, más unitarios
+    	!, ~		Y logico y negacion binaria
+    	**		exponenciación
+    	*, /, %		multiplicación, división, resto
+    	+, -		suma, resta
+    	<<, >>		desplazamientos de bits a izquierda y derecha
+    	<=, >=, <, >	comparación
+    	==, !=		igualdad, desigualdad
+    	&		Y binario
+    	^		XOR binario
+    	|		O binario
+    	&&		Y lógico
+    	||		O lógico
+    	expr ? expr : expr
+    			operador condicional
+    	=, *=, /=, %=,
+    	+=, -=, <<=, >>=,
+    	&=, ^=, |=	asignación
+    
+    Se permiten variables del intérprete de órdenes como operandos. El
+    nombre de la variable se reemplaza por su valor (forzado a un entero de
+    anchura fija) dentro de la expresión. La variable necesita no tener su
+    atributo entero activado para ser usada en una expresión.
+    
+    Los operadores se evalúan en orden de precedencia. Las sub-expresiones
+    en paréntesis se evalúan primero y pueden sobreescribir las reglas de
+    precedencia anteriores.
+    
+    Estado de salida:
+    Si el último ARG se evalúa a 0, devuelve 1; devuelve 0 en otro caso.
+____________________
+
+EJERCICIO 5.7
+
+mianfg@ei142155:~$ w=2
+mianfg@ei142155:~$ let x=w+8 y=w-1
+mianfg@ei142155:~$ echo $x
+10
+mianfg@ei142155:~$ echo $y
+1
+____________________
+
+EJERCICIO 5.8
+
+#!/bin/bash
+
+if [[ $1 == $2 ]]
+	then printf "Ambos valores son iguales\n"
+elif [[ $1 > $2 ]]
+	then printf "$1 es mayor que $2"
+else
+	printf "$2 es mayor que $1"
+fi
+____________________
+
+EJERCICIO 5.9
+
+#!/bin/bash
+
+ejecucion=`test -x $1; echo $?`
+plano=`test -f $1; echo $?`
+ejecucionyplano=$[(ejecucion==0)&&(plano==0)]
+enlacesimbolico=`test -h $1; echo $?`
+
+printf "El archivo es plano y tiene permisos de ejecución: $ejecucionyplano\nEl archivo es un enlace simbólico: $enlacesimbolico\nReferencia: 0 es falso, 1 es verdadero\n"
+____________________
+
+EJERCICIO 5.10
+
+mianfg@ei142155:~$ help test
+test: test [expresión]
+    Evaluate conditional expression.
+    
+    Exits with a status of 0 (true) or 1 (false) depending on
+    the evaluation of EXPR.  Expressions may be unary or binary.  Unary
+    expressions are often used to examine the status of a file.  There
+    are string operators and numeric comparison operators as well.
+    
+    The behavior of test depends on the number of arguments.  Read the
+    bash manual page for the complete specification.
+    
+    File operators:
+    
+      -a FILE        True if file exists.
+      -b FILE        True if file is block special.
+      -c FILE        True if file is character special.
+      -d FILE        True if file is a directory.
+      -e FILE        True if file exists.
+      -f FILE        True if file exists and is a regular file.
+      -g FILE        True if file is set-group-id.
+      -h FILE        True if file is a symbolic link.
+      -L FILE        True if file is a symbolic link.
+      -k FILE        True if file has its `sticky' bit set.
+      -p FILE        True if file is a named pipe.
+      -r FILE        True if file is readable by you.
+      -s FILE        True if file exists and is not empty.
+      -S FILE        True if file is a socket.
+      -t FD          True if FD is opened on a terminal.
+      -u FILE        True if the file is set-user-id.
+      -w FILE        True if the file is writable by you.
+      -x FILE        True if the file is executable by you.
+      -O FILE        True if the file is effectively owned by you.
+      -G FILE        True if the file is effectively owned by your group.
+      -N FILE        True if the file has been modified since it was last read.
+    
+      FILE1 -nt FILE2  True if file1 is newer than file2 (according to
+                       modification date).
+    
+      FILE1 -ot FILE2  True if file1 is older than file2.
+    
+      FILE1 -ef FILE2  True if file1 is a hard link to file2.
+    
+    All file operators except -h and -L are acting on the target of a symbolic
+    link, not on the symlink itself, if FILE is a symbolic link.
+    
+    String operators:
+    
+      -z STRING      True if string is empty.
+    
+      -n STRING
+         STRING      True if string is not empty.
+    
+      STRING1 = STRING2
+                     True if the strings are equal.
+      STRING1 != STRING2
+                     True if the strings are not equal.
+      STRING1 < STRING2
+                     True if STRING1 sorts before STRING2 lexicographically.
+      STRING1 > STRING2
+                     True if STRING1 sorts after STRING2 lexicographically.
+    
+    Other operators:
+    
+      -o OPTION      True if the shell option OPTION is enabled.
+      -v VAR	 True if the shell variable VAR is set
+      -R VAR	 True if the shell variable VAR is set and is a name reference.
+      ! EXPR         True if expr is false.
+      EXPR1 -a EXPR2 True if both expr1 AND expr2 are true.
+      EXPR1 -o EXPR2 True if either expr1 OR expr2 is true.
+    
+      arg1 OP arg2   Arithmetic tests.  OP is one of -eq, -ne,
+                     -lt, -le, -gt, or -ge.
+    
+    Arithmetic binary operators return true if ARG1 is equal, not-equal,
+    less-than, less-than-or-equal, greater-than, or greater-than-or-equal
+    than ARG2.
+    
+    See the bash manual page bash(1) for the handling of parameters (i.e.
+    missing parameters).
+    
+    Exit Status:
+    Returns success if EXPR evaluates to true; fails if EXPR evaluates to
+    false or an invalid argument is given.
+mianfg@ei142155:~$ test HOLA=HOLA
+mianfg@ei142155:~$ echo $?
+0
+mianfg@ei142155:~$ test HOLA=HELLO
+mianfg@ei142155:~$ echo $?
+0
+mianfg@ei142155:~$ test $[2-1] -eq $[1-9]
+mianfg@ei142155:~$ echo $?
+1
+mianfg@ei142155:~$ test $[5-2] -eq $[2+1]
+mianfg@ei142155:~$ echo $?
+0
+____________________
+
+EJERCICIO 5.11
+
+a) Dice que el archivo existe si la orden test -f ./sesion5.pdf devuelve el valor 0 (es satisfactoria).
+
+b) if test -f ./sesion5.pdf ; then printf "El archivo ./sesion5.pdf existe\n"; elif test -d /bin ; then printf "El archivo /bin es un directorio"; fi
+
+c) if test -f ./sesion5.pdf && test -d /bin ; then printf "El archivo ./sesion5.pdf existe y /bin es un directorio\n"; elif test -d /bin && ! test.d /bin; then printf "El archivo ./sesion5.pdf existe y /bin no es un directorio\n"; elif ! test -d /bin && test.d /bin; then printf "El archivo ./sesion5.pdf no existe y /bin es un directorio\n"; else printf "El archivo ./sesion5.pdf no existe y /bin no es un directorio \n"; fi
+
+d)
+#!/bin/bash
+if test -f $1 && test -d $2
+    then printf "El archivo $1 existe y $2 es un directorio\n"
+elif test -f $1 && ! test -d $2
+    then printf "El archivo $1 existe y $2 no es un directorio\n"
+elif ! test -f $1 && test -d $2
+    then printf "El archivo $1 no existe y $2 es un directorio\n"
+else
+    printf "El archivo $1 no existe y $2 no es un directorio\n"
+fi
+____________________
+
+EJERCICIO 5.12
+
+#!/bin/bash
+propietario=`test -O $1; echo $?`
+lectura=`test -r $1; echo $?`
+
+if (( propietario == 0 )) && (( lectura == 0 ))
+    then printf "El archivo tiene permisos de lectura, y tú eres su propietario\n"
+elif (( propietario == 0 )) && (( lectura != 0 ))
+    then printf "El archivo no tiene permisos de lectura, y tú eres su propietario\n"
+elif (( propietario != 0 )) && (( lectura == 0 ))
+    then printf "El archivo tiene permisos de lectura, y tú no eres su propietario\n"
+else
+    printf "El archivo no tiene permisos de lectura, y tú no eres su propietario\n"
+fi
+
+Otra forma alternativa de hacerlo:
+
+#!/bin/bash
+propietario=`test -O $1; echo $?`
+lectura=`test -r $1; echo $?`
+
+if (( propietario == 0 ))
+    then propietario=""
+else
+    then propietario="no"
+fi
+____________________
+
+EJERCICIO 5.13
+
+#!/bin/bash
+
+if [[ $1 == -h ]]
+	then printf "Este programa le dirá si el número de días que quedan hasta fin de año es múltiplo de cinco o no\n"
+else
+	anio=365
+	dia=`date +%j`
+	quedan=`expr $anio - $dia`
+	if [[ `expr $quedan % 5` == 0 ]]
+		then printf "El número de días que quedan hasta acabar el año es múltiplo de cinco\n"
+	else
+		printf "El número de días que quedan hasta acabar el año no es múltiplo de cinco\n"
+	fi
+fi
+____________________
+
+EJERCICIO 5.14
+
+Que el mensaje de error se mostrará en pantalla además del mesnaje que se quiere mostrar.
+____________________
+
+EJERCICIO 5.15
+
+if [ `echo $1 | grep -e '^.$'` ]
+	then echo "Esto es un único caracter"
+	if [[ $1 =~ [a-z] ]]
+		then " y se trata de una letra minúscula\n"
+	elif [[ $1 =~ [A-Z] ]]
+		then " y se trata de una letra mayúscula\n"
+	else
+		then " y no se trata de una letra\n"
+else
+	echo "Esto no es un único caracter"
+fi
+____________________
+
+EJERCICIO 5.16
+
+mianfg@ei142155:~$ find / -regex '.*\([0-9]+.*e\).*'
+mianfg@ei142155:~$ find . -regex '.*e.*' -and -not -regex '.*[01].*'
+____________________
+
+EJERCICIO 5.17
+
+Podríamos utilizar grep -c
+____________________
+
+EJERCICIOS EN s5_Complementos.txt
+
+1)
+mianfg@ei142155:~$ grep '\.' s5_datos
+
+2)
+mianfg@ei142155:~$ grep '\\' s5_datos
+
+3)
+mianfg@ei142155:~$ grep pi\. s5_datos
+
+4)
+mianfg@ei142155:~$ grep p\... s5_datos
+
+5)
+mianfg@ei142155:~$ grep 'pe\.' s5_datos
+
+6)
+mianfg@ei142155:~$ grep 'l\+' s5_datos
+
+7)
+mianfg@ei142155:~$ grep 'pa\+p' s5_datos
+
+8)
+mianfg@ei142155:~$ grep 'pa?' s5_datos
+
+9)
+mianfg@ei142155:~$ grep 'pa\\?p' s5_datos
+
+10)
+mianfg@ei142155:~$ grep '\(pa\)\+' s5_datos
+
+11)
+mianfg@ei142155:~$ grep 'pa\{2,5\}p' s5_datos
+
+12)
+mianfg@ei142155:~$ grep [qt] s5_datos
+
+13)
+mianfg@ei142155:~$ grep [qt\,] s5_datos
+
+14)
+mianfg@ei142155:~$ grep [s-] s5_datos
+
+15)
+mianfg@ei142155:~$ grep '^[#*]' s5_datos
+
+16)
+mianfg@ei142155:~$ grep '^b-\{3\}o$' s5_datos
+
+17)
+mianfg@ei142155:~$ grep '^p.*a$' s5_datos
+
+18)
+mianfg@ei142155:~$ grep "'" s5_datos
+mianfg@ei142155:~$ grep -v "'" s5_datos
+
+19)
+mianfg@ei142155:~$ grep '"' s5_datos
+
+20)
+mianfg@ei142155:~$ grep '.*\(e\|i\).*' s5_datos

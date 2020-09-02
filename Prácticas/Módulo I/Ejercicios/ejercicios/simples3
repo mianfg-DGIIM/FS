@@ -1,0 +1,6 @@
+#!/bin/bash
+
+grep -v -x "" $1 > temp
+# otra forma: grep -v . $1 > temp
+cat temp > $1
+rm temp

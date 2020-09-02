@@ -1,0 +1,5 @@
+#!/bin/bash
+
+grep -v '^#' $1 > .$1_temp
+cat .$1_temp > $1
+rm .$1_temp

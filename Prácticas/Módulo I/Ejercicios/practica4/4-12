@@ -1,0 +1,8 @@
+#!/bin/bash
+
+EXISTE=`cut -d ":" -f 1 /etc/passwd | grep -q -w "$1"; echo $?`
+if [[ $EXISTE == 0 ]]; then
+  echo "El usuario existe en el sistema"
+else
+  echo "El usuario no existe en el sistema"
+fi

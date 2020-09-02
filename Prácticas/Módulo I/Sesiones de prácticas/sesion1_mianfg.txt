@@ -1,0 +1,303 @@
+SESIÓN 1 DE PRÁCTICAS FS
+Miguel Ángel Fernández Gutiérrez
+
+EJERCICIO 2.1
+
+a), b), c), d)
+
+mianfg@ei142155:~$ mkdir ejercicio1
+mianfg@ei142155:~$ cd ejercicio1
+mianfg@ei142155:~/ejercicio1$ mkdir Ejer1 Ejer2 Ejer3
+mianfg@ei142155:~/ejercicio1$ cd Ejer1
+mianfg@ei142155:~/ejercicio1/Ejer1$ mkdir Ejer21
+mianfg@ei142155:~/ejercicio1/Ejer1$ touch arch100.txt filetags.txt practFS.ext robet201.me
+mianfg@ei142155:/$ cd ~
+mianfg@ei142155:~$ cd ejercicio1
+mianfg@ei142155:~/ejercicio1$ cd Ejer1
+mianfg@ei142155:~/ejercicio1/Ejer1$ cd Ejer21
+mianfg@ei142155:~/ejercicio1/Ejer1/Ejer21$ touch robet202.me ejer11sol.txt blue.me
+mianfg@ei142155:~/ejercicio1/Ejer1/Ejer21$ cd ..
+mianfg@ei142155:~/ejercicio1/Ejer1$ cd ..
+mianfg@ei142155:~/ejercicio1$ cd Ejer2
+mianfg@ei142155:~/ejercicio1/Ejer2$ touch ejer2arch.txt ejer2filetags.txt readme2.pdf
+mianfg@ei142155:~/ejercicio1/Ejer2$ cd ..
+mianfg@ei142155:~/ejercicio1$ cd Ejer3
+mianfg@ei142155:~/ejercicio1/Ejer3$ touch ejer3arch.txt ejer3filetags.txt readme3.pdf
+
+e)
+
+Sí, se haría usando mkdir directamente en una línea, y listando
+la localización de los archivos desde ejercicio1
+______
+
+EJERCICIO 2.2
+
+a)
+mianfg@ei142155:~/ejercicio1/Ejer3$ cd ..
+mianfg@ei142155:~/ejercicio1$ mv Ejer1/Ejer21 Ejer2
+
+b)
+mianfg@ei142155:~/ejercicio1$ cp Ejer1/*.*x* Ejer3
+
+c)
+En ese caso, mostrará en formato largo (-la) los archivos que
+estén en Ejer3 (puesto que con .. nos dirigimos al directorio
+padre de Ejer2, y luego nos vamos a Ejer 3) que contengan "arch".
+Mostrando, por tanto:
+mianfg@ei142155:~/ejercicio1/Ejer2$ ls -la ../Ejer3/*arch*
+-rw-r--r-- 1 mianfg alumno 0 sep 21 16:14 ../Ejer3/arch100.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 21 16:03 ../Ejer3/ejer3arch.txt
+
+______
+
+EJERCICIO 2.3
+
+mianfg@ei142155:~/ejercicio1/Ejer2$ ls -a ../*
+../Ejer1:
+.  ..  arch100.txt  filetags.txt  practFS.ext  robet201.me
+
+../Ejer2:
+.  ..  Ejer21  ejer2arch.txt  ejer2filetags.txt  readme2.pdf
+
+../Ejer3:
+.   arch100.txt    ejer3filetags.txt  practFS.ext
+..  ejer3arch.txt  filetags.txt       readme3.pdf
+
+______
+
+EJERCICIO 2.4
+
+mianfg@ei142155:~/ejercicio1/Ejer2$ ls -l
+total 2
+drwxr-xr-x 2 mianfg alumno 2048 sep 21 16:00 Ejer21
+-rw-r--r-- 1 mianfg alumno    0 sep 21 16:03 ejer2arch.txt
+-rw-r--r-- 1 mianfg alumno    0 sep 21 16:03 ejer2filetags.txt
+-rw-r--r-- 1 mianfg alumno    0 sep 21 16:03 readme2.pdf
+mianfg@ei142155:~/ejercicio1/Ejer2$ touch ejer2arch.txt
+mianfg@ei142155:~/ejercicio1/Ejer2$ ls -l
+total 2
+drwxr-xr-x 2 mianfg alumno 2048 sep 21 16:00 Ejer21
+-rw-r--r-- 1 mianfg alumno    0 sep 21 16:30 ejer2arch.txt
+-rw-r--r-- 1 mianfg alumno    0 sep 21 16:03 ejer2filetags.txt
+-rw-r--r-- 1 mianfg alumno    0 sep 21 16:03 readme2.pdf
+
+______
+
+EJERCICIO 2.5
+
+a)
+mianfg@ei142155:~$ pwd
+/home/mianfg
+	Podemos ver que no es el mismo que el de el compañero,
+	tras el directorio home está el directorio del usuario
+
+b)
+mianfg@ei142155:~$ mkdir FS FP FFT LMD
+mianfg@ei142155:~$ cd FS
+mianfg@ei142155:~/FS$ mkdir P1 P2 P3 P4 P5 P6
+mianfg@ei142155:~/FS$ cd ../FP
+mianfg@ei142155:~/FP$ mkdir P1 P2 P3 P4 P5 P6
+mianfg@ei142155:~/FP$ cd ../FFT
+mianfg@ei142155:~/FFT$ mkdir P1 P2 P3 P4 P5 P6
+mianfg@ei142155:~/FFT$ cd ../LMD
+mianfg@ei142155:~/LMD$ mkdir P1 P2 P3 P4 P5 P6
+mianfg@ei142155:~/LMD$ cd ..
+
+c)
+mianfg@ei142155:~$ cd FS/P1
+mianfg@ei142155:~/FS/P1$ cp /etc/hosts /etc/passwd .
+
+d)
+mianfg@ei142155:~/FS/P1$ cat hosts
+127.0.0.1	localhost
+127.0.1.1	ei142155
+127.0.0.2	ei142155
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+172.18.140.10 bacus0.ugr.es bacus0
+172.18.140.11 venus0.ugr.es venus0
+172.18.140.12 lepus0.ugr.es lepus0
+172.18.140.13 cetus0.ugr.es cetus0
+172.18.140.14 fenix0.ugr.es fenix0
+172.18.140.15 sepus0.ugr.es sepus0
+172.18.140.16 pirus0.ugr.es pirus0
+172.18.142.10 backup-etsiit2.ugr.es backup-etsiit2
+172.18.142.11 venus2.ugr.es venus2
+172.18.142.12 lepus2.ugr.es lepus2
+172.18.142.13 cetus2.ugr.es cetus2
+172.18.142.14 fenix2.ugr.es fenix2
+172.18.142.15 sepus2.ugr.es sepus2
+172.18.142.16 pirus2.ugr.es pirus2
+172.18.142.1 turing1.ugr.es turing1
+# Maquinas de los departamentos y necesarias para examen
+150.214.190.179 lsi.ugr.es lsi
+150.214.191.180 decsai.ugr.es decsai
+150.214.204.16 prado.ugr.es prado
+150.214.204.15 idp.ugr.es idpmianfg@ei142155:~/FS/P1$ cat passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+libuuid:x:100:101::/var/lib/libuuid:
+syslog:x:101:104::/home/syslog:/bin/false
+messagebus:x:102:106::/var/run/dbus:/bin/false
+usbmux:x:103:46:usbmux daemon,,,:/home/usbmux:/bin/false
+dnsmasq:x:104:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+avahi-autoipd:x:105:113:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/bin/false
+kernoops:x:106:65534:Kernel Oops Tracking Daemon,,,:/:/bin/false
+rtkit:x:107:114:RealtimeKit,,,:/proc:/bin/false
+saned:x:108:115::/home/saned:/bin/false
+whoopsie:x:109:116::/nonexistent:/bin/false
+speech-dispatcher:x:110:29:Speech Dispatcher,,,:/var/run/speech-dispatcher:/bin/sh
+avahi:x:111:117:Avahi mDNS daemon,,,:/var/run/avahi-daemon:/bin/false
+lightdm:x:112:118:Light Display Manager:/var/lib/lightdm:/bin/false
+colord:x:113:121:colord colour management daemon,,,:/var/lib/colord:/bin/false
+hplip:x:114:7:HPLIP system user,,,:/var/run/hplip:/bin/false
+pulse:x:115:122:PulseAudio daemon,,,:/var/run/pulse:/bin/false
+operador:x:300:1000:operador,,,:/home/operador:/bin/bash
+nvidia-persistenced:x:116:126:NVIDIA Persistence Daemon,,,:/:/sbin/nologin
+mianfg:x:3441:1500:MIGUEL ANGEL FERNANDEZ GUTIERREZ:/home/mianfg:/bin/bash
+
+______
+
+EJERCICIO 2.6
+
+mianfg@ei142155:~$ mkdir Sesion.1 Sesion.10 Sesion.2 Sesion.3 Sesion.4 Sesion.27 Prueba.1 Sintaxis.2
+
+a)
+mianfg@ei142155:~$ rmdir Sesion.4
+
+b)
+mianfg@ei142155:~$ ls Sesion.?
+Sesion.1:
+
+Sesion.2:
+
+Sesion.3:
+
+c)
+mianfg@ei142155:~$ ls *.1
+Prueba.1:
+
+Sesion.1:
+
+d)
+mianfg@ei142155:~$ ls *.[12]
+Prueba.1:
+
+Sesion.1:
+
+Sesion.2:
+
+Sintaxis.2:
+
+e)
+mianfg@ei142155:~$ ls *si*
+Música:
+
+Sesion.1:
+
+Sesion.10:
+
+Sesion.2:
+
+Sesion.27:
+
+Sesion.3:
+
+f)
+
+Al colocar ls *si*.2, no se muestra nada
+
+______
+
+EJERCICIO 2.7
+
+a)
+mianfg@ei142155:/bin$ ls ????
+bash  cpio  date  grep	kill  less  nano  ping	sync  true  zcat  znew
+chvt  dash  echo  gzip	kmod  more  open  stty	tcsh  vdir  zcmp
+
+b)
+mianfg@ei142155:/bin$ ls d* f*
+dash		      dbus-daemon   df	   dnsdomainname  false      findmnt
+date		      dbus-uuidgen  dir    domainname	  fgconsole  fuser
+dbus-cleanup-sockets  dd	    dmesg  dumpkeys	  fgrep      fusermount
+
+c)
+mianfg@ei142155:/bin$ ls sa* se* ad*
+ls: no se puede acceder a sa*: No existe el archivo o el directorio
+ls: no se puede acceder a ad*: No existe el archivo o el directorio
+sed  setfacl  setfont  setupcon
+
+d)
+mianfg@ei142155:/bin$ ls t*r
+tar
+
+______
+
+EJERCICIO 2.8
+
+a)
+mianfg@ei142155:~$ ls tem*.gz tem*.zip
+ls: no se puede acceder a tem*.gz: No existe el archivo o el directorio
+ls: no se puede acceder a tem*.zip: No existe el archivo o el directorio
+
+b)
+mianfg@ei142155:/bin$ ls tem*.gz tem*.zip
+ls: no se puede acceder a tem*.gz: No existe el archivo o el directorio
+ls: no se puede acceder a tem*.zip: No existe el archivo o el directorio
+
+c)
+En ambos casos no puede acceder al archivo o directorio
+
+______
+
+EJERCICIO 2.9
+
+a)
+mianfg@ei142155:/$ head /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+(Nótese que por defecto head muestra 10 líneas)
+
+b)
+mianfg@ei142155:/$ tail -5 /etc/passwd
+hplip:x:114:7:HPLIP system user,,,:/var/run/hplip:/bin/false
+pulse:x:115:122:PulseAudio daemon,,,:/var/run/pulse:/bin/false
+operador:x:300:1000:operador,,,:/home/operador:/bin/bash
+nvidia-persistenced:x:116:126:NVIDIA Persistence Daemon,,,:/:/sbin/nologin
+mianfg:x:3441:1500:MIGUEL ANGEL FERNANDEZ GUTIERREZ:/home/mianfg:/bin/bash
+
+_____
+
+EJERCICIO 2.10
+
+

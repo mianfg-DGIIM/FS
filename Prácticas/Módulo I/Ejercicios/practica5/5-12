@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ $1 == "-h" ]]
+then
+	echo "Ayudaaaa!!"
+else
+	quedan=`date +%j`
+	quedan=`expr 365 - $quedan`
+	echo quedan $quedan
+	if [[ `expr $quedan%5` == 0 ]]
+	then
+		echo "Lo es"
+	else
+		echo "No lo es"
+	fi
+fi

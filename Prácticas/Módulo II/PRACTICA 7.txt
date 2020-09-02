@@ -1,0 +1,247 @@
+FUNDAMENTOS DE SOFTWARE - PRÁCTICA 8
+Alumno: Miguel Ángel Fernández Gutiérrez
+Fecha:  30 noviembre, 2017
+____________
+
+EJERCICIO 8.1 
+
+mianfg@mianfgpc:~/Escritorio/sesion 8$ g++ -c main.cpp
+main.cpp: In function ‘int main()’:
+main.cpp:7:17: error: ‘print_hello’ was not declared in this scope
+     print_hello();
+                 ^
+main.cpp:9:52: error: ‘factorial’ was not declared in this scope
+     cout << "The factorial of 7 is " << factorial(7) << endl;
+
+Ha dado error porque las órdenes se encontraban en la librería que hemos comentado
+____________
+
+EJERCICIO 8.2
+
+Hemos podido generar main2.o porque sólo llama al resto de funciones. No se ha podido generar programa2 porque faltaban sen.o cos.o tg.o, que podríamos haber añadido con una biblioteca.
+____________
+
+EJERCICIO 8.3
+
+-L. especifica buscar las bibliotecas en la carpeta en la que nos encontramos. Al no encontrarse ahí, nos muestra el error.
+____________
+
+EJERCICIO 8.4
+
+No se genera la misma secuencia de órdenes, ya que sólo revisa los cpp que han sido modificados.
+
+mianfg@mianfgpc:~/Escritorio/sesion 8$ touch sin.cpp factorial.cpp
+mianfg@mianfgpc:~/Escritorio/sesion 8$ make -f makefileE
+g++ -I./includes -c factorial.cpp
+g++ -I./includes -c sin.cpp
+ar -rvs libmates.a sin.o cos.o tan.o
+r - sin.o
+r - cos.o
+r - tan.o
+g++ -L./ -o programa2 main2.o factorial.o hello.o -lmates
+mianfg@mianfgpc:~/Escritorio/sesion 8$ touch cos.cpp
+mianfg@mianfgpc:~/Escritorio/sesion 8$ make -f makefileE
+g++ -I./includes -c cos.cpp
+ar -rvs libmates.a sin.o cos.o tan.o
+r - sin.o
+r - cos.o
+r - tan.o
+g++ -L./ -o programa2 main2.o factorial.o hello.o -lmates
+____________
+
+EJERCICIO 8.5
+
+# Nombre archivo: makefileF
+# Uso: make 
+# Descripción: Mantiene todas las dependencias entre los módulos y la biblioteca
+#              que utiliza el programa2.
+
+LIB_DIR=./
+
+programa2: main2.o factorial.o hello.o libmates.a
+	g++ -L$(LIB_DIR) -o $@ $^
+
+main2.o: main2.cpp functions.h mates.h 
+	g++ -c main2.cpp
+
+factorial.o: factorial.cpp functions.h
+	g++ -c factorial.cpp
+
+hello.o: hello.cpp functions.h
+	g++ -c hello.cpp
+
+libmates.a: sin.o cos.o tan.o
+	ar -rvs libmates.a sin.o cos.o tan.o
+
+sin.o: sin.cpp mates.h
+	g++ -c sin.cpp
+
+cos.o: cos.cpp mates.h
+	g++ -c cos.cpp
+
+tan.o: tan.cpp mates.h
+	g++ -c tan.cpp
+mianfg@mianfgpc:~/Escritorio/sesion 8$ make -f makefileF
+make: 'programa2' está actualizado.
+mianfg@mianfgpc:~/Escritorio/sesion 8$ touch mates.h
+mianfg@mianfgpc:~/Escritorio/sesion 8$ make -f makefileF
+g++ -c main2.cpp
+g++ -c sin.cpp
+g++ -c cos.cpp
+g++ -c tan.cpp
+ar -rvs libmates.a sin.o cos.o tan.o
+r - sin.o
+r - cos.o
+r - tan.o
+g++ -L./ -o programa2 main2.o factorial.o hello.o libmates.a
+____________
+
+EJERCICIO 8.6
+
+# Nombre archivo: makefile
+# Uso: make 
+# Descripción: Mantiene todas las dependencias entre los módulos y la biblioteca
+#              que utiliza el programa2.
+
+CC=g++
+
+INCLUDE_DIR=./includes
+
+LIB_DIR=./
+
+
+programa2: main2.o factorial.o hello.o libmates.a
+	$(CC) -L$(LIB_DIR) -o $@ $^
+
+main2.o: main2.cpp  
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+factorial.o: factorial.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+hello.o: hello.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+libmates.a: sin.o cos.o tan.o
+	ar -rvs $@ $^
+
+sin.o: sin.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+cos.o: cos.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+tan.o: tan.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+____________
+
+EJERCICIO 8.7
+
+# Nombre archivo: makefile
+# Uso: make 
+# Descripción: Mantiene todas las dependencias entre los módulos y la biblioteca
+#              que utiliza el programa2.
+
+CC=g++
+
+INCLUDE_DIR=./includes
+
+LIB_DIR=./
+
+
+programa2: main2.o factorial.o hello.o libmates.a
+	$(CC) -L$(LIB_DIR) -o $@ $^
+
+main2.o: main2.cpp  
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+factorial.o: factorial.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+hello.o: hello.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+libmates.a: sin.o cos.o tan.o
+	ar -rvs $@ $^
+
+sin.o: sin.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+cos.o: cos.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+tan.o: tan.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+____________
+
+EJERCICIO 8.8
+
+La variable predefinida es AR
+
+# Nombre archivo: makefile
+# Uso: make 
+# Descripción: Mantiene todas las dependencias entre los módulos y la biblioteca
+#              que utiliza el programa2.
+
+CC=g++
+
+INCLUDE_DIR=./includes
+
+LIB_DIR=./
+
+
+programa2: main2.o factorial.o hello.o libmates.a
+	$(CC) -L$(LIB_DIR) -o $@ $^
+
+main2.o: main2.cpp  
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+factorial.o: factorial.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+hello.o: hello.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+libmates.a: sin.o cos.o tan.o
+	ar -rvs $@ $^
+
+sin.o: sin.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+cos.o: cos.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+
+tan.o: tan.cpp 
+	$(CC) -I$(INCLUDE_DIR) -c $^
+____________
+
+EJERCICIO 8.9
+
+# Nombre archivo: makefileH
+# Uso: make -f makefileH
+# Descripción: Mantiene todas las dependencias entre los módulos que utiliza el
+#              programa1.
+
+# La variable CC indica que vamos a compilar con g++
+CC=g++
+
+# La variable CPPFLAGS indica los warnings (avisos) que se nos pueden dar
+CPPFLAGS=-Wall –I./includes
+
+#La variable SOURCE_MODULES nos indica los archivos cpp que necesitaremos
+SOURCE_MODULES=main.cpp factorial.cpp hello.cpp
+
+#OBJECT_MODULES nos indice los archivos .o
+OBJECT_MODULES=$(SOURCE_MODULES:.cpp=.o)
+
+#EXECUTABLE nos indica el nombre del archivo ejecutable que se genera
+EXECUTABLE=programa1
+all: $(OBJECT_MODULES) $(EXECUTABLE)
+$(EXECUTABLE): $(OBJECT_MODULES)
+$(CC) $^ -o $@
+# Regla para obtener los archivos objeto .o que dependerán de los archivos .cpp
+# Aquí, $< y $@ tomarán 
+valores respectivamente main.cpp y main.o y así sucesivamente
+.o: .cpp
+$(CC) $(CPPFLAGS) $< -o $@
+

@@ -1,0 +1,199 @@
+FUNDAMENTOS DE SOFTWARE - PRÁCTICA 3
+Miguel Ángel Fernández Gutiérrez, 28 septiembre 2017
+1º DGIIM
+_________
+
+EJERCICIO 3.1
+
+mianfg@ei140154:~$ mkdir practica3
+mianfg@ei140154:~$ cd practica3
+mianfg@ei140154:~/practica3$ touch archivo1.txt archivo2.txt ejemplo1.txt ejemplo2.txt
+mianfg@ei140154:~/practica3$ ls -l
+total 0
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 archivo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 archivo2.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo2.txt
+
+a)
+mianfg@ei140154:~/practica3$ chmod o+x archivo1.txt
+mianfg@ei140154:~/practica3$ ls -l
+total 0
+-rw-r--r-x 1 mianfg alumno 0 sep 28 15:37 archivo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 archivo2.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo2.txt
+
+b)
+mianfg@ei140154:~/practica3$ chmod g+wx archivo1.txt
+mianfg@ei140154:~/practica3$ ls -l
+total 0
+-rw-rwxr-x 1 mianfg alumno 0 sep 28 15:37 archivo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 archivo2.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo2.txt
+
+c)
+mianfg@ei140154:~/practica3$ chmod go-r archivo1.txt
+mianfg@ei140154:~/practica3$ ls -l
+total 0
+-rw--wx--x 1 mianfg alumno 0 sep 28 15:37 archivo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 archivo2.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo2.txt
+
+d)
+mianfg@ei140154:~/practica3$ chmod u+x,o+w archivo1.txt
+mianfg@ei140154:~/practica3$ ls -l
+total 0
+-rwx-wx-wx 1 mianfg alumno 0 sep 28 15:37 archivo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 archivo2.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 ejemplo2.txt
+
+e)
+mianfg@ei140154:~/practica3$ chmod g+x e*
+mianfg@ei140154:~/practica3$ ls -l
+total 0
+-rwx-wx-wx 1 mianfg alumno 0 sep 28 15:37 archivo1.txt
+-rw-r--r-- 1 mianfg alumno 0 sep 28 15:37 archivo2.txt
+-rw-r-xr-- 1 mianfg alumno 0 sep 28 15:37 ejemplo1.txt
+-rw-r-xr-- 1 mianfg alumno 0 sep 28 15:37 ejemplo2.txt
+
+__________
+
+EJERCICIO 3.2
+
+a)
+mianfg@ei140154:~/practica3-2$ ls .. > ej31
+mianfg@ei140154:~/practica3-2$ cat ej31
+Descargas
+Documentos
+Escritorio
+Imágenes
+Música
+Plantillas
+practica3
+practica3-2
+practica3.txt
+Público
+Vídeos
+
+b)
+mianfg@ei140154:~/practica3-2$ tail -2 ej31 > ej32
+mianfg@ei140154:~/practica3-2$ cat ej32
+Público
+Vídeos
+
+c)
+mianfg@ei140154:~/practica3-2$ cat ej31 >> ej32
+mianfg@ei140154:~/practica3-2$ cat ej32
+Público
+Vídeos
+Descargas
+Documentos
+Escritorio
+Imágenes
+Música
+Plantillas
+practica3
+practica3-2
+practica3.txt
+Público
+Vídeos
+
+__________
+
+EJERCICIO 3.3
+
+a)
+mianfg@ei140154:~/practica3-3$ ls -l .. | tail -6
+drwxr-xr-x 2 mianfg alumno 2048 sep 28 15:37 practica3
+drwxr-xr-x 2 mianfg alumno 2048 sep 28 15:45 practica3-2
+drwxr-xr-x 2 mianfg alumno 2048 sep 28 15:55 practica3-3
+-rw-r--r-- 1 mianfg alumno    0 sep 28 15:39 practica3.txt
+drwxr-xr-x 2 mianfg alumno 2048 sep 28 15:36 Público
+drwxr-xr-x 2 mianfg alumno 2048 sep 28 15:36 Vídeos
+
+b)
+(NOTA: usaremos el directorio practica3-2 al tener los archivos caracteres en su interior)
+mianfg@ei140154:~/practica3-2$ wc -m e* f*
+110 ej31
+125 ej32
+wc: f*: No existe el archivo o el directorio
+235 total
+
+__________
+
+EJERCICIO 3.4
+
+a)
+mianfg@ei140154:~/practica3-4$ (man chmod | tail -17) > ejercicio1
+mianfg@ei140154:~/practica3-4$ cat ejercicio1
+       This  is  free  software:  you  are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       chmod(2)
+
+       The full documentation for chmod is maintained as a Texinfo manual.  If
+       the  info  and  chmod programs are properly installed at your site, the
+       command
+
+              info coreutils 'chmod invocation'
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.21                March 2014                          CHMOD(1)
+
+b)
+mianfg@ei140154:~/practica3-4$ pwd >> ejercicio1
+mianfg@ei140154:~/practica3-4$ cat ejercicio1
+       This  is  free  software:  you  are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       chmod(2)
+
+       The full documentation for chmod is maintained as a Texinfo manual.  If
+       the  info  and  chmod programs are properly installed at your site, the
+       command
+
+              info coreutils 'chmod invocation'
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.21                March 2014                          CHMOD(1)
+/home/mianfg/practica3-4
+
+c)
+mianfg@ei140154:~/practica3-4$ (who; ls) > ejercicio3
+mianfg@ei140154:~/practica3-4$ cat ejercicio3
+mianfg   :0           2017-09-28 15:36 (:0)
+mianfg   pts/7        2017-09-28 15:36 (:0)
+ejercicio1
+ejercicio3
+
+d)
+mianfg@ei140154:~/practica3-4$ (wc ejercicio1 >> ejercicio3) || (wc ejercicio1 &>> ejercicio3)
+mianfg@ei140154:~/practica3-4$ cat ejercicio3
+mianfg   :0           2017-09-28 15:36 (:0)
+mianfg   pts/7        2017-09-28 15:36 (:0)
+ejercicio1
+ejercicio3
+ 18  69 551 ejercicio1
+
+e)
+mianfg@ei140154:~/practica3-4$ ls -l
+total 4
+-rw-r--r-- 1 mianfg alumno 551 sep 28 16:06 ejercicio1
+-rw-r--r-- 1 mianfg alumno 133 sep 28 16:11 ejercicio3
+mianfg@ei140154:~/practica3-4$ chmod g-r,a+x ejercicio1 ejercicio3
+mianfg@ei140154:~/practica3-4$ ls -l
+total 4
+-rwx--xr-x 1 mianfg alumno 551 sep 28 16:06 ejercicio1
+-rwx--xr-x 1 mianfg alumno 133 sep 28 16:11 ejercicio3

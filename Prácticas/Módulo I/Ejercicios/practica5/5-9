@@ -1,0 +1,17 @@
+#!/bin/bash
+
+ES_PLANO=`test -f $1 && echo 0 || echo 1`
+ES_DIRECTORIO=`test -x $1 && echo 0 || echo 1`
+
+if [[ $ES_PLANO == 0 && $ES_DIRECTORIO = 0 ]]
+then
+	echo "El archivo es plano y tiene permisos de ejecución sobre él"
+elif [[ $ES_PLANO == 0 && $ES_DIRECTORIO == 1 ]]
+then
+	echo "El archivo es plano y no tiene permisos de ejecución sobre él"
+elif [[ $ES_PLANO == 1 && $ES_DIRECTORIO == 0 ]]
+then
+	echo "El archivo no es plano y tiene permisos de ejecución sobre él"
+else
+	echo "El archivo ni es plano ni tiene permisos de ejecución sobre él"
+fi
