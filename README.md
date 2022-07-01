@@ -1,6 +1,6 @@
-[⬅ Más asignaturas del DGIIM](https://github.com/mianfg/DGIIM)
+[⬅ Más asignaturas del DGIIM](https://github.com/mianfg-DGIIM)
 
-![Repo image](https://repository-images.githubusercontent.com/292329031/56eba980-ed46-11ea-980d-ae17442a9935)
+![Repo image](https://repository-images.githubusercontent.com/292329031/927b880f-6786-4611-a034-e883386f5e16)
 
 # `FS` Fundamentos del Software
 
